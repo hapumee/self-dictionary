@@ -11,11 +11,12 @@
   },
   "scripts": {
     "start-react": "cross-env NODE_PATH=src react-scripts start",
-    "build": "react-scripts build",
+    "build-react": "cross-env NODE_PATH=src react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-storybook": "start-storybook -p 9001 -c .storybook-app",
-    "build-storybook": "build-storybook -c .storybook-app -o .storybook-app-dist"
+    "build-storybook": "build-storybook -c .storybook-app -o .storybook-app-dist",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "eslintConfig": {
     "extends": "react-app"
