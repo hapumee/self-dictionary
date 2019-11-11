@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 
-class ComponentExample extends Component {
+class ReactstrapButton extends Component {
     render() {
         return (
             <Button color="danger">Button Test on Bootstrap</Button>
@@ -9,4 +9,4 @@ class ComponentExample extends Component {
     }
 }
 
-export default ComponentExample;
+export default ReactstrapButton;

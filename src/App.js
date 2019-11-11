@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ComponentExample from 'components/ComponentExample';
+import WordList from 'components/WordList';
 
 class App extends Component {
   render() {
     return (
         <div>
-            <ComponentExample />
+            <WordList />
         </div>
     )
   }
