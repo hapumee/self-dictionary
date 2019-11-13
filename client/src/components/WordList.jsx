@@ -35,7 +35,7 @@ class WordList extends React.Component {
         axios.get(API_URL)
             .then(response => response.data)
             .then((data) => {
-                this.setState({words: data});
+                this.setState({words: data.result_data});
                 // console.log(typeof this.state.words, this.state.words);
             })
             .catch(error => {
@@ -56,7 +56,13 @@ class WordList extends React.Component {
 
         this.setState({inputWord: ''});
 
-        axios.post(API_URL, params).then(this._getWordList);
+        axios.post(API_URL, params).then(function(response) {
+            console.log("response: ", response);
+
+            if (response.data === 'OK') { // [TODO] API 반환값 다듬기
+                this._getWordList();
+            }
+        }.bind(this));
     }
 
     // remove the word from date file

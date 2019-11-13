@@ -20,7 +20,7 @@
     "start-storybook": "start-storybook -p 9001 -c .storybook-app",
     "build-storybook": "build-storybook -c .storybook-app -o .storybook-app-dist",
     "deploy-storybook": "storybook-to-ghpages",
-    "start-dev-server": "json-server -p 3001 src/data/words.list.json"
+    "start-dev-server": "json-server -p 3001 src/test/test.json"
   },
   "eslintConfig": {
     "extends": "react-app"
