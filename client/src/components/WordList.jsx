@@ -57,9 +57,9 @@ class WordList extends React.Component {
         this.setState({inputWord: ''});
 
         axios.post(API_URL, params).then(function(response) {
-            console.log("response: ", response);
+            // console.log("response: ", response);
 
-            if (response.data === 'OK') { // [TODO] API 반환값 다듬기
+            if (response.status === 200) {
                 this._getWordList();
             }
         }.bind(this));

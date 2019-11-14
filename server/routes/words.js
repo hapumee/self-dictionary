@@ -1,10 +1,12 @@
 var express = require("express");
 var router = express.Router();
+const _ = require('underscore');
 const fs = require('fs');
 const WORD_LIST_API = 'data/words.list.json';
 
-router.get("/", function(req, res, next) {
-    new Promise((resolve, reject) => {
+// get word list
+router.get("/", async function(req, res, next) {
+    const response = await new Promise((resolve, reject) => {
         fs.readFile(WORD_LIST_API, 'utf8', function(err, data) {
             if (err) {
                 reject(err);
@@ -12,10 +14,42 @@ router.get("/", function(req, res, next) {
                 resolve(data);
             }
         });
-    }).then((data) => {
-        res.send(data);
-    }).catch((err) => {
-        throw err;
+    });
+    // console.log(response);
+    res.send(response);
+});
+
+// add new word on the list
+router.post("/", async function(req, res, next) {
+    // console.log("input:", req.body);
+
+    const response = await new Promise((resolve, reject) => {
+        fs.readFile(WORD_LIST_API, 'utf8', function(err, data) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+
+    let words = JSON.parse(response); // {Array}
+    let elWithMaxId = _.max(words['result_data'], function(word) {
+        return word.id;
+    });
+    let inputId = elWithMaxId.id + 1;
+    let inputWord = req.body.word;
+
+    words['result_data'].push({
+        id: inputId,
+        word: inputWord
+    });
+    // console.log(words);
+
+    fs.writeFile(WORD_LIST_API, JSON.stringify(words), 'utf-8', function(err) {
+        if (err) throw err;
+
+        res.sendStatus(200);
     });
 });
 
