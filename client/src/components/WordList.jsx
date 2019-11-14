@@ -72,7 +72,13 @@ class WordList extends React.Component {
 
         let targetId = event.target.value;
 
-        axios.delete(API_URL + '/' + targetId).then(this._getWordList);
+        axios.delete(API_URL + '/' + targetId).then(function(response) {
+            // console.log("response: ", response);
+
+            if (response.status === 200) {
+                this._getWordList();
+            }
+        }.bind(this));
     }
 
     render() {
