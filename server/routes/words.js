@@ -8,7 +8,7 @@ const WORD_LIST_API = 'data/words.list.json';
  * get the word list
  * @returns {Promise.<*>}
  */
-const getWordList = async () => {
+const getWordList = async function () {
     return await new Promise((resolve, reject) => {
         fs.readFile(WORD_LIST_API, 'utf8', (err, data) => {
             if (err) {
@@ -33,7 +33,7 @@ router.post("/", async function(req, res, next) {
 
     getWordList().then((response) => {
         let words = JSON.parse(response); // {Array}
-        let elWithMaxId = _.max(words['result_data'], function(word) {
+        let elWithMaxId = _.max(words['result_data'], (word) => {
             return word.id;
         });
         let inputId = !_.isEmpty(elWithMaxId) ? parseInt(elWithMaxId.id) + 1 : 0;
@@ -45,7 +45,7 @@ router.post("/", async function(req, res, next) {
         });
         // console.log(words);
 
-        fs.writeFile(WORD_LIST_API, JSON.stringify(words), 'utf-8', function(err) {
+        fs.writeFile(WORD_LIST_API, JSON.stringify(words), 'utf-8', (err) => {
             if (err) throw err;
             res.sendStatus(200);
          });
@@ -59,14 +59,14 @@ router.delete("/:id", async function(req, res, next) {
     getWordList().then((response) => {
         let words = JSON.parse(response); // {Array}
         let paramId = parseInt(req.params.id);
-        let targetId = _.findIndex(words['result_data'], function(word) {
+        let targetId = _.findIndex(words['result_data'], (word) => {
             return _.isEqual(word.id, paramId);
         });
 
         words['result_data'].splice(targetId, 1);
         // console.log(words);
 
-        fs.writeFile(WORD_LIST_API, JSON.stringify(words), 'utf-8', function(err) {
+        fs.writeFile(WORD_LIST_API, JSON.stringify(words), 'utf-8', (err) => {
             if (err) throw err;
             res.sendStatus(200);
         });

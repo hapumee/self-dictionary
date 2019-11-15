@@ -1,17 +1,17 @@
-import React from "react";
+import React, { Component, useState } from "react";
 import _ from "underscore";
 import axios from "axios";
 import { InputGroup, InputGroupAddon, Input, Button } from "reactstrap";
 import { ListGroup, ListGroupItem } from "reactstrap";
 
 const API_URL = "http://localhost:3001/words";
-const delete_button = {
+const button_style = {
     paddingTop: '0px',
     paddingBottom: '0px',
     marginLeft: '10px'
 };
 
-class WordList extends React.Component {
+class WordList extends Component {
     constructor(props) {
         super(props);
 
@@ -24,12 +24,10 @@ class WordList extends React.Component {
         this.handleUpdateInputWord = this.handleUpdateInputWord.bind(this);
         this.handleDeleteWord = this.handleDeleteWord.bind(this);
         this._getWordList = this._getWordList.bind(this);
+        this.handleOpenEngDic = this.handleOpenEngDic.bind(this);
     }
 
-    componentDidMount() {
-        this._getWordList();
-    }
-
+    // get the word list
     _getWordList() {
         // get data
         axios.get(API_URL)
@@ -81,6 +79,19 @@ class WordList extends React.Component {
         }.bind(this));
     }
 
+    // open dictionary
+    handleOpenEngDic(event, query) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // console.log(query);
+        window.open("https://en.dict.naver.com/#/search?query=" + query + "&range=all");
+    }
+
+    componentDidMount() {
+        this._getWordList();
+    }
+
     render() {
         let words = this.state.words;
 
@@ -93,10 +104,13 @@ class WordList extends React.Component {
                 </InputGroupAddon>
             </InputGroup>
             <ListGroup flush>
-                {_.map(words, (word) => {
+                {_.map(words, (wordItem, index) => {
+                    // console.log(wordItem, index);
                     return (
-                        <ListGroupItem tag="a" href="#" key={word.index}>
-                            {word.word} <button className="btn btn-outline-danger btn-sm"  style={delete_button} value={word.id} onClick={this.handleDeleteWord}>delete</button>
+                        <ListGroupItem tag="a" href="#" key={index} data-id={wordItem.id}>
+                            {wordItem.word}
+                            <button className="btn btn-outline-danger btn-sm"  style={button_style} value={wordItem.id} onClick={this.handleDeleteWord}>delete</button>
+                            <button className="btn btn-outline-info btn-sm"  style={button_style} onClick={(event) => this.handleOpenEngDic(event, wordItem.word)}>see the meaning</button>
                         </ListGroupItem>
                     );
                 })}
